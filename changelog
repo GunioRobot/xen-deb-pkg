@@ -1,3 +1,12 @@
+xen (4.1.1+hg23981-0) unstable; urgency=low
+
+  * Adapt to xen unstable
+  * Add extra patches from XCP
+  * Add some local bugfix
+  * Customized building components
+
+ -- Zheng Li <dev@zheng.li>  Fri, 21 Oct 2011 11:00:46 +0000
+
 xen (4.1.1-2) unstable; urgency=low
 
   * Fix hvmloader with gcc 4.6.
