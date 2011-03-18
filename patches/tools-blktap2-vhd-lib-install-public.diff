@@ -1,0 +1,17 @@
+--- a/tools/blktap2/vhd/lib/Makefile
++++ b/tools/blktap2/vhd/lib/Makefile
+@@ -62,10 +62,10 @@
+ 	$(AR) rc $@ $^
+ 
+ install: all
+-	$(INSTALL_DIR) -p $(DESTDIR)$(INST-DIR)
+-	$(INSTALL_PROG) $(LIBVHD) $(DESTDIR)$(INST-DIR)
+-	ln -sf libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) $(DESTDIR)$(INST-DIR)/libvhd.so.$(LIBVHD-MAJOR)
+-	ln -sf libvhd.so.$(LIBVHD-MAJOR) $(DESTDIR)$(INST-DIR)/libvhd.so
++	$(INSTALL_DIR) -p $(DESTDIR)$(LIBDIR)
++	$(INSTALL_PROG) $(LIBVHD) $(DESTDIR)$(LIBDIR)
++	ln -sf libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) $(DESTDIR)$(LIBDIR)/libvhd.so.$(LIBVHD-MAJOR)
++	ln -sf libvhd.so.$(LIBVHD-MAJOR) $(DESTDIR)$(LIBDIR)/libvhd.so
+ 
+ clean:
+ 	rm -rf *.a *.so* *.o *~ $(DEPS) $(LIBVHD)
