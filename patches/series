@@ -57,3 +57,4 @@ tools-blktap2-vhd-lib-install-public.diff
 tools-blktap2-control-restore-soname.diff
 tools-blktap2-control-install-public.diff
 tools-libxc-restore-soname.diff
+tools-libxc-install-public.diff
