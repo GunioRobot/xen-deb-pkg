@@ -1,0 +1,58 @@
+--- a/tools/blktap2/vhd/lib/Makefile
++++ b/tools/blktap2/vhd/lib/Makefile
+@@ -2,6 +2,10 @@
+ BLKTAP_ROOT := ../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
++LIBVHD-MAJOR     = 1.0
++LIBVHD-MINOR     = 0
++LIBVHD-SONAME    = libvhd.so.$(LIBVHD-MAJOR)
++
+ LVM-UTIL-OBJ    := $(BLKTAP_ROOT)/lvm/lvm-util.o
+ 
+ LIBVHD-BUILD    := libvhd.so
+@@ -41,15 +45,17 @@
+ LIB-OBJS         = $(patsubst %.c,%.o,$(LIB-SRCS))
+ LIB-OBJS        += $(LVM-UTIL-OBJ)
+ 
+-LIBVHD           = libvhd.a libvhd.so
++LIBVHD           = libvhd.a libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR)
+ 
+ all: build
+ 
+ build: $(LIBVHD)
+ 
+-libvhd.so: $(LIB-OBJS)
+-	$(CC) $(SHLIB_LDFLAGS) \
+-		$(LDFLAGS) -o $@ $(LIBS) $^
++libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR): $(LIB-OBJS)
++	$(CC) -Wl,$(SONAME_LDFLAG),$(LIBVHD-SONAME) $(SHLIB_LDFLAGS) \
++	  $(LDFLAGS) -o libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) $(LIBS) $^
++	ln -sf libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) libvhd.so.$(LIBVHD-MAJOR)
++	ln -sf libvhd.so.$(LIBVHD-MAJOR) libvhd.so
+ 
+ libvhd.a: $(LIB-OBJS)
+ 	$(AR) rc $@ $^
+@@ -57,6 +63,8 @@
+ install: all
+ 	$(INSTALL_DIR) -p $(DESTDIR)$(INST-DIR)
+ 	$(INSTALL_PROG) $(LIBVHD) $(DESTDIR)$(INST-DIR)
++	ln -sf libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) $(DESTDIR)$(INST-DIR)/libvhd.so.$(LIBVHD-MAJOR)
++	ln -sf libvhd.so.$(LIBVHD-MAJOR) $(DESTDIR)$(INST-DIR)/libvhd.so
+ 
+ clean:
+ 	rm -rf *.a *.so* *.o *~ $(DEPS) $(LIBVHD)
+--- a/tools/blktap2/lvm/Makefile
++++ b/tools/blktap2/lvm/Makefile
+@@ -11,9 +11,9 @@
+ CFLAGS            += -I../include
+ CFLAGS            += -D_GNU_SOURCE
+ 
+-ifeq ($(CONFIG_X86_64),y)
++# ifeq ($(CONFIG_X86_64),y)
+ CFLAGS            += -fPIC
+-endif
++# endif
+ 
+ LVM-OBJS          := lvm-util.o
+ 
