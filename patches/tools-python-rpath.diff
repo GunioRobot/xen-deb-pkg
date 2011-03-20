@@ -6,77 +6,69 @@
  extra_compile_args  = [ "-fno-strict-aliasing", "-Werror" ]
 +extra_link_args = [ "-Wl,-rpath,${ORIGIN}/../../.." ]
  
- include_dirs = [ XEN_ROOT + "/tools/libxc",
-                  XEN_ROOT + "/tools/xenstore",
-@@ -37,6 +38,7 @@
+ PATH_XEN      = XEN_ROOT + "/tools/include"
+ PATH_LIBXC    = XEN_ROOT + "/tools/libxc"
+@@ -13,6 +14,7 @@
  
  xc = Extension("xc",
                 extra_compile_args = extra_compile_args,
 +               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "xen/lowlevel/xc" ],
-                library_dirs       = library_dirs,
-                libraries          = libraries,
-@@ -45,6 +47,7 @@
+                include_dirs       = [ PATH_XEN, PATH_LIBXC, "xen/lowlevel/xc" ],
+                library_dirs       = [ PATH_LIBXC ],
+                libraries          = [ "xenctrl", "xenguest" ],
+@@ -21,6 +23,7 @@
  
  xs = Extension("xs",
                 extra_compile_args = extra_compile_args,
 +               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "xen/lowlevel/xs" ],
-                library_dirs       = library_dirs,
-                libraries          = libraries,
-@@ -53,6 +56,7 @@
+                include_dirs       = [ PATH_XEN, PATH_XENSTORE, "xen/lowlevel/xs" ],
+                library_dirs       = [ PATH_XENSTORE ],
+                libraries          = [ "xenstore" ],
+@@ -29,6 +32,7 @@
  
  scf = Extension("scf",
                 extra_compile_args = extra_compile_args,
 +               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "xen/lowlevel/scf" ],
-                library_dirs       = library_dirs,
-                libraries          = libraries,
-@@ -69,6 +73,7 @@
- 
- acm = Extension("acm",
-                extra_compile_args = extra_compile_args,
-+               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "xen/lowlevel/acm" ],
-                library_dirs       = library_dirs,
-                libraries          = libraries,
-@@ -77,6 +82,7 @@
+                include_dirs       = [ "xen/lowlevel/scf" ],
+                library_dirs       = [ ],
+                libraries          = [ ],
+@@ -45,6 +49,7 @@
  
  flask = Extension("flask",
                 extra_compile_args = extra_compile_args,
 +               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "xen/lowlevel/flask" ] + 
-                                         [ "../flask/libflask/include" ],
-                library_dirs       = library_dirs + [ "../flask/libflask" ],
-@@ -86,6 +92,7 @@
+                include_dirs       = [ PATH_XEN, PATH_LIBXC, "xen/lowlevel/flask",
+                                       "../flask/libflask/include" ],
+                library_dirs       = [ PATH_LIBXC, "../flask/libflask" ],
+@@ -55,6 +60,7 @@
  
  ptsname = Extension("ptsname",
                 extra_compile_args = extra_compile_args,
 +               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "ptsname" ],
-                library_dirs       = library_dirs,
-                libraries          = libraries,
-@@ -94,6 +101,7 @@
+                include_dirs       = [ "ptsname" ],
+                library_dirs       = [ ],
+                libraries          = [ ],
+@@ -63,6 +69,7 @@
  
  checkpoint = Extension("checkpoint",
-                        extra_compile_args = extra_compile_args,
-+                       extra_link_args    = extra_link_args,
-                        include_dirs       = include_dirs,
-                        library_dirs       = library_dirs,
-                        libraries          = libraries + [ "rt" ],
-@@ -103,6 +111,7 @@
+                extra_compile_args = extra_compile_args,
++               extra_link_args    = extra_link_args,
+                include_dirs       = [ PATH_XEN, PATH_LIBXC, PATH_XENSTORE ],
+                library_dirs       = [ PATH_LIBXC, PATH_XENSTORE ],
+                libraries          = [ "xenctrl", "xenguest", "xenstore", "rt" ],
+@@ -74,6 +81,7 @@
  
  netlink = Extension("netlink",
-                     extra_compile_args = extra_compile_args,
-+                    extra_link_args    = extra_link_args,
-                     include_dirs       = include_dirs,
-                     library_dirs       = library_dirs,
-                     libraries          = libraries,
-@@ -112,6 +121,7 @@
+                extra_compile_args = extra_compile_args,
++               extra_link_args    = extra_link_args,
+                include_dirs       = [ ],
+                library_dirs       = [ ],
+                libraries          = [ ],
+@@ -83,6 +91,7 @@
  
  xl = Extension("xl",
                 extra_compile_args = extra_compile_args,
 +               extra_link_args    = extra_link_args,
-                include_dirs       = include_dirs + [ "xen/lowlevel/xl" ],
-                library_dirs       = library_dirs,
-                libraries          = libraries + ["xenlight" ] + blktap_ctl_libs + uuid_libs,
+                include_dirs       = [ PATH_XEN, PATH_LIBXL, PATH_LIBXC, "xen/lowlevel/xl" ],
+                library_dirs       = [ PATH_LIBXL ],
+                libraries          = [ "xenlight" ],
