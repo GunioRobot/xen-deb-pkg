@@ -1,16 +1,16 @@
 --- a/tools/libxc/Makefile
 +++ b/tools/libxc/Makefile
 @@ -1,9 +1,6 @@
- XEN_ROOT = ../..
+ XEN_ROOT = $(CURDIR)/../..
  include $(XEN_ROOT)/tools/Rules.mk
  
--MAJOR    = 4.0
+-MAJOR    = 4.2
 -MINOR    = 0
 -
  CTRL_SRCS-y       :=
  CTRL_SRCS-y       += xc_core.c
  CTRL_SRCS-$(CONFIG_X86) += xc_core_x86.c
-@@ -90,12 +87,12 @@
+@@ -87,12 +84,12 @@
  
  LIB := libxenctrl.a
  ifneq ($(stubdom),y)
@@ -25,7 +25,7 @@
  endif
  
  ifneq ($(stubdom),y)
-@@ -116,15 +113,11 @@
+@@ -113,15 +110,11 @@
  install: build
  	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
  	$(INSTALL_DIR) $(DESTDIR)$(INCLUDEDIR)
@@ -43,7 +43,7 @@
  	$(INSTALL_DATA) xenguest.h $(DESTDIR)$(INCLUDEDIR)
  
  .PHONY: TAGS
-@@ -153,24 +146,14 @@
+@@ -150,24 +143,14 @@
  libxenctrl.a: $(CTRL_LIB_OBJS)
  	$(AR) rc $@ $^
  
@@ -53,9 +53,9 @@
 -	ln -sf $< $@
 -
 -libxenctrl.so.$(MAJOR).$(MINOR): $(CTRL_PIC_OBJS)
--	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenctrl.so.$(MAJOR) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) -o $@ $^ $(PTHREAD_LIBS)
+-	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenctrl.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $^ $(DLOPEN_LIBS) $(PTHREAD_LIBS)
 +libxenctrl.so: $(CTRL_PIC_OBJS)
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) -o $@ $^ $(PTHREAD_LIBS)
++	$(CC) $(LDFLAGS) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) -o $@ $^ $(PTHREAD_LIBS)
  
  # libxenguest
  
@@ -70,16 +70,16 @@
  ifeq ($(CONFIG_MiniOS),y)
  zlib-options =
  else
-@@ -193,9 +176,9 @@
+@@ -190,9 +173,9 @@
  xc_dom_bzimageloader.o: CFLAGS += $(call zlib-options,D)
  xc_dom_bzimageloader.opic: CFLAGS += $(call zlib-options,D)
  
 -libxenguest.so.$(MAJOR).$(MINOR): COMPRESSION_LIBS = $(call zlib-options,l)
 -libxenguest.so.$(MAJOR).$(MINOR): $(GUEST_PIC_OBJS) libxenctrl.so
--	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenguest.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz -lxenctrl $(PTHREAD_LIBS)
+-	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenguest.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz $(LDLIBS_libxenctrl) $(PTHREAD_LIBS)
 +libxenguest.so: COMPRESSION_LIBS = $(call zlib-options,l)
 +libxenguest.so: $(GUEST_PIC_OBJS) libxenctrl.so
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz -lxenctrl $(PTHREAD_LIBS)
++	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz $(LDLIBS_libxenctrl) $(PTHREAD_LIBS)
  
  xenctrl_osdep_ENOSYS.so: $(OSDEP_PIC_OBJS) libxenctrl.so
- 	$(CC) -g $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(OSDEP_PIC_OBJS) -lxenctrl
+ 	$(CC) -g $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(OSDEP_PIC_OBJS) $(LDLIBS_libxenctrl)
