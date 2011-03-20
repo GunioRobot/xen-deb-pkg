@@ -38,9 +38,9 @@
  endif
 +LDFLAGS += $(LDFLAGS_libxenctrl) $(call LDFLAGS_RPATH)
  
- # Get gcc to generate the dependencies for us.
- CFLAGS          += -Wp,-MD,.$(@F).d
-@@ -48,24 +44,22 @@
+ LIB-SRCS        := libvhd.c
+ LIB-SRCS        += libvhd-journal.c
+@@ -45,24 +41,22 @@
  LIB-OBJS         = $(patsubst %.c,%.o,$(LIB-SRCS))
  LIB-OBJS        += $(LVM-UTIL-OBJ)
  
@@ -53,12 +53,12 @@
 +build: $(LIBVHD)
 +
 +libvhd.so: $(LIB-OBJS)
-+	$(CC) $(CFLAGS) $(SHLIB_LDFLAGS) \
++	$(CC) $(SHLIB_LDFLAGS) \
 +		$(LDFLAGS) -o $@ $(LIBS) $^
  
  libvhd.a: $(LIB-OBJS)
--	$(CC) $(CFLAGS) -Wl,$(SONAME_LDFLAG),$(LIBVHD-SONAME) $(SHLIB_LDFLAGS) \
--		$(LDFLAGS) -o libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) $(LIBS) $^
+-	$(CC) -Wl,$(SONAME_LDFLAG),$(LIBVHD-SONAME) $(SHLIB_LDFLAGS) \
+-		$(LDFLAGS) -o libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) $^ $(LIBS)
 -	ln -sf libvhd.so.$(LIBVHD-MAJOR).$(LIBVHD-MINOR) libvhd.so.$(LIBVHD-MAJOR)
 -	ln -sf libvhd.so.$(LIBVHD-MAJOR) libvhd.so
  	$(AR) rc $@ $^
@@ -74,7 +74,7 @@
 --- a/tools/blktap2/control/Makefile
 +++ b/tools/blktap2/control/Makefile
 @@ -1,10 +1,7 @@
- XEN_ROOT := ../../../
+ XEN_ROOT := $(CURDIR)/../../../
  include $(XEN_ROOT)/tools/Rules.mk
  
 -MAJOR              = 1.0
@@ -84,7 +84,7 @@
  
  IBIN               = tap-ctl
  
-@@ -41,35 +38,29 @@
+@@ -38,35 +35,29 @@
  PICS = $(CTL_PICS)
  
  LIB_STATIC = $(LIBNAME).a
@@ -103,15 +103,15 @@
 -	ln -sf $< $@
 -
  tap-ctl: tap-ctl.o $(LIBNAME).so
--	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(call LDFLAGS_RPATH,../lib) -o $@ $^
+-	$(CC) $(LDFLAGS) -o $@ $^
++	$(CC) $(LDFLAGS) $(call LDFLAGS_RPATH,../lib) -o $@ $^
  
  $(LIB_STATIC): $(CTL_OBJS)
  	$(AR) r $@ $^
  
  $(LIB_SHARED): $(CTL_PICS)
--	$(CC) $(CFLAGS) $(LDFLAGS) -fPIC  -Wl,$(SONAME_LDFLAG) -Wl,$(LIBSONAME) $(SHLIB_LDFLAGS) -rdynamic $^ -o $@
-+	$(CC) $(CFLAGS) $(LDFLAGS) -fPIC $(SHLIB_LDFLAGS) -rdynamic $^ -o $@
+-	$(CC) $(LDFLAGS) -fPIC  -Wl,$(SONAME_LDFLAG) -Wl,$(LIBSONAME) $(SHLIB_LDFLAGS) -rdynamic $^ -o $@
++	$(CC) $(LDFLAGS) -fPIC $(SHLIB_LDFLAGS) -rdynamic $^ -o $@
  
  install: $(IBIN) $(LIB_STATIC) $(LIB_SHARED)
 -	$(INSTALL_DIR) -p $(DESTDIR)$(SBINDIR)
