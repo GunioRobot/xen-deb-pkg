@@ -1,11 +1,11 @@
 --- a/tools/xcutils/Makefile
 +++ b/tools/xcutils/Makefile
-@@ -16,7 +16,7 @@
- 
- PROGRAMS = xc_restore xc_save readnotes lsevtchn
- 
--LDLIBS   = $(LDLIBS_libxenctrl) $(LDLIBS_libxenguest) $(LDLIBS_libxenstore)
-+LDLIBS   = $(LDLIBS_libxenctrl) $(LDLIBS_libxenguest) $(LDLIBS_libxenstore) $(call LDFLAGS_RPATH,../lib)
+@@ -24,7 +24,7 @@
+ LDLIBS_xc_restore := $(LDLIBS_libxenctrl) $(LDLIBS_libxenguest)
+ LDLIBS_xc_save    := $(LDLIBS_libxenctrl) $(LDLIBS_libxenguest) $(LDLIBS_libxenstore)
+ LDLIBS_readnotes  := $(LDLIBS_libxenctrl) $(LDLIBS_libxenguest)
+-LDLIBS_lsevtchn   := $(LDLIBS_libxenctrl)
++LDLIBS_lsevtchn   := $(LDLIBS_libxenctrl) $(call LDFLAGS_RPATH,../lib)
  
  .PHONY: all
  all: build
