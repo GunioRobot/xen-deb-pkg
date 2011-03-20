@@ -1,10 +1,10 @@
 --- a/tools/libxl/Makefile
 +++ b/tools/libxl/Makefile
 @@ -5,12 +5,6 @@
- XEN_ROOT = ../..
+ XEN_ROOT = $(CURDIR)/../..
  include $(XEN_ROOT)/tools/Rules.mk
  
--MAJOR = 1.0
+-MAJOR = 2.0
 -MINOR = 0
 -
 -XLUMAJOR = 1.0
@@ -12,8 +12,8 @@
 -
  CFLAGS += -Werror -Wno-format-zero-length -Wmissing-declarations
  CFLAGS += -I. -fPIC
- CFLAGS += $(CFLAGS_libxenctrl) $(CFLAGS_libxenguest) $(CFLAGS_libxenstore) $(CFLAGS_libblktapctl)
-@@ -74,26 +68,14 @@
+ 
+@@ -82,26 +76,14 @@
  	mv __libxl_$*.h _libxl_$*.h
  	mv __libxl_$*.c _libxl_$*.c
  
@@ -24,9 +24,9 @@
 -	ln -sf $< $@
 -
 -libxenlight.so.$(MAJOR).$(MINOR): $(LIBXL_OBJS)
--	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenlight.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $^
+-	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenlight.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXL_LIBS)
 +libxenlight.so: $(LIBXL_OBJS)
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^
++	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXL_LIBS)
  
  libxenlight.a: $(LIBXL_OBJS)
  	$(AR) rcs libxenlight.a $^
@@ -38,13 +38,13 @@
 -	ln -sf $< $@
 -
 -libxlutil.so.$(XLUMAJOR).$(XLUMINOR): $(LIBXLU_OBJS)
--	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxlutil.so.$(XLUMAJOR) $(SHLIB_LDFLAGS) -o $@ $^
+-	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxlutil.so.$(XLUMAJOR) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXLU_LIBS)
 +libxlutil.so: $(LIBXLU_OBJS)
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^
++	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXLU_LIBS)
  
  libxlutil.a: $(LIBXLU_OBJS)
  	$(AR) rcs libxlutil.a $^
-@@ -108,13 +90,9 @@
+@@ -116,13 +98,9 @@
  	$(INSTALL_DIR) $(DESTDIR)$(INCLUDEDIR)
  	$(INSTALL_DIR) $(DESTDIR)$(BASH_COMPLETION_DIR)
  	$(INSTALL_PROG) xl $(DESTDIR)$(SBINDIR)
@@ -58,5 +58,5 @@
 -	ln -sf libxlutil.so.$(XLUMAJOR) $(DESTDIR)$(LIBDIR)/libxlutil.so
 +	$(INSTALL_PROG) libxlutil.so $(DESTDIR)$(LIBDIR)
  	$(INSTALL_DATA) libxlutil.a $(DESTDIR)$(LIBDIR)
- 	$(INSTALL_DATA) libxl.h _libxl_types.h libxl_uuid.h $(DESTDIR)$(INCLUDEDIR)
+ 	$(INSTALL_DATA) libxl.h _libxl_types.h libxl_utils.h libxl_uuid.h $(DESTDIR)$(INCLUDEDIR)
  	$(INSTALL_DATA) bash-completion $(DESTDIR)$(BASH_COMPLETION_DIR)/xl.sh
