@@ -4,10 +4,10 @@
 -MAJOR    = 1.0
 -MINOR    = 0
 -
- XEN_ROOT = ../../..
+ XEN_ROOT = $(CURDIR)/../../..
  include $(XEN_ROOT)/tools/Rules.mk
  
-@@ -21,7 +18,7 @@
+@@ -15,7 +12,7 @@
  PIC_OBJS := $(patsubst %.c,%.opic,$(SRCS))
  
  LIB := libflask.a
@@ -16,7 +16,7 @@
  
  .PHONY: all
  all: build
-@@ -34,10 +31,8 @@
+@@ -28,10 +25,8 @@
  install: build
  	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
  	$(INSTALL_DIR) $(DESTDIR)$(INCLUDEDIR)
@@ -28,7 +28,7 @@
  	$(INSTALL_DATA) include/libflask.h $(DESTDIR)$(INCLUDEDIR)/xen/xsm
  
  .PHONY: TAGS
-@@ -53,12 +48,7 @@
+@@ -47,12 +42,7 @@
  libflask.a: $(LIB_OBJS)
  	$(AR) rc $@ $^
  
@@ -38,8 +38,8 @@
 -	ln -sf $< $@
 -
 -libflask.so.$(MAJOR).$(MINOR): $(PIC_OBJS)
--	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libflask.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $^
+-	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libflask.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $^ $(LDLIBS_libxenctrl)
 +libflask.so: $(PIC_OBJS)
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^
++	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^ $(LDLIBS_libxenctrl)
  
  -include $(DEPS)
