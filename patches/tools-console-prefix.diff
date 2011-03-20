@@ -1,9 +1,9 @@
 --- a/tools/console/Makefile
 +++ b/tools/console/Makefile
 @@ -11,6 +11,7 @@
- LDLIBS += $(UTIL_LIBS)
- LDLIBS += $(SOCKET_LIBS)
- LDLIBS += -lrt
+ 
+ LDLIBS_xenconsoled += $(UTIL_LIBS)
+ LDLIBS_xenconsoled += -lrt
 +LDFLAGS += $(call LDFLAGS_RPATH,../lib)
  
  BIN      = xenconsoled xenconsole
