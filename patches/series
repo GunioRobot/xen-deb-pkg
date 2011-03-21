@@ -64,3 +64,4 @@ tools-libxl-install-public.diff
 tools-libxc-xcp-update.diff
 tools-ocaml-makefile.diff
 tools-ocaml-libs-xl-xcp-lite-update.diff
+tools-ocaml-xenstored-xcp-custom.diff

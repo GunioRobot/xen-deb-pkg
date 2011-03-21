@@ -1,0 +1,60 @@
+--- a/tools/ocaml/xenstored/define.ml
++++ b/tools/ocaml/xenstored/define.ml
+@@ -25,8 +25,8 @@
+ 
+ let default_config_dir = "/etc/xensource"
+ 
+-let maxwatch = ref (50)
+-let maxtransaction = ref (20)
++let maxwatch = ref (-1)
++let maxtransaction = ref (0)
+ 
+ let domid_self = 0x7FF0
+ 
+--- a/tools/ocaml/xenstored/quota.ml
++++ b/tools/ocaml/xenstored/quota.ml
+@@ -19,9 +19,9 @@
+ exception Transaction_opened
+ 
+ let warn fmt = Logging.warn "quota" fmt
+-let activate = ref true
+-let maxent = ref (10000)
+-let maxsize = ref (4096)
++let activate = ref false
++let maxent = ref (-1)
++let maxsize = ref (-1)
+ 
+ type t = {
+ 	maxent: int;               (* max entities per domU *)
+--- a/tools/ocaml/xenstored/transaction.ml
++++ b/tools/ocaml/xenstored/transaction.ml
+@@ -18,7 +18,7 @@
+ 
+ let none = 0
+ let test_eagain = ref false
+-let do_coalesce = ref true
++let do_coalesce = ref false
+ 
+ let check_parents_perms_identical root1 root2 path =
+ 	let hierarch = Store.Path.get_hierarchy path in
+--- a/tools/ocaml/xenstored/xenstored.conf
++++ b/tools/ocaml/xenstored/xenstored.conf
+@@ -1,10 +1,7 @@
+ # default xenstored config
+ 
+ # Where the pid file is stored
+-pid-file = /var/run/xensource/xenstored.pid
+-
+-# Randomly failed a transaction with EAGAIN. Used for testing Xs user
+-test-eagain = true
++pid-file = /var/run/xenstored.pid
+ 
+ # Activate transaction merge support
+ merge-activate = true
+@@ -31,5 +28,5 @@
+ # access-log-file = /var/log/xenstored-access.log
+ # access-log-nb-lines = 13215
+ # acesss-log-nb-chars = 180
+-# access-log-special-ops = false
++access-log-special-ops = true
+ 
