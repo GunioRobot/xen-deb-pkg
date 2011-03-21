@@ -60,3 +60,5 @@ tools-libxc-restore-soname.diff
 tools-libxc-install-public.diff
 tools-libxl-restore-soname.diff
 tools-libxl-install-public.diff
+
+tools-libxc-xcp-update.diff
