@@ -1,3 +1,5 @@
 usr/lib/*.a
 usr/include/*.h
 usr/include/xen
+usr/include/vhd
+usr/include/blktap2
