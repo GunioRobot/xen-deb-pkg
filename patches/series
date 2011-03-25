@@ -65,3 +65,4 @@ tools-libxc-xcp-update.diff
 tools-ocaml-makefile.diff
 tools-ocaml-libs-xl-xcp-lite-update.diff
 tools-ocaml-xenstored-xcp-custom.diff
+tools-blktap2-include-install-heads.diff

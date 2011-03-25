@@ -1,0 +1,29 @@
+--- a/tools/blktap2/include/Makefile
++++ b/tools/blktap2/include/Makefile
+@@ -1,14 +1,22 @@
+ XEN_ROOT := $(CURDIR)/../../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
++LIBVHDDIR      := vhd
++LIBVHD_HEADERS := vhd-uuid.h vhd.h libvhd.h libvhd-journal.h list.h
++
++BLKTAPDIR      := blktap2
++BLKTAP_HEADERS := blktap2.h blktaplib.h tapdisk-message.h
++
+ .PHONY: all
+ all:
+ 
+ .PHONY: install
+ install:
+-	$(INSTALL_DIR) -p $(DESTDIR)$(INCLUDEDIR)
+-
++	$(INSTALL_DIR) -p $(DESTDIR)$(INCLUDEDIR)/$(BLKTAPDIR)
++	$(INSTALL_DATA) $(BLKTAP_HEADERS) $(DESTDIR)$(INCLUDEDIR)/$(BLKTAPDIR)
++	$(INSTALL_DIR) -p $(DESTDIR)$(INCLUDEDIR)/$(LIBVHDDIR)
++	$(INSTALL_DATA) $(LIBVHD_HEADERS) $(DESTDIR)$(INCLUDEDIR)/$(LIBVHDDIR)
+ 
+ .PHONY: clean
+ clean:
+-	@:
++	@:
+\ No newline at end of file
