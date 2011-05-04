@@ -116,24 +116,6 @@
  \vfill
  \vfill
  \vfill
-@@ -2143,7 +2143,7 @@
- 
- \begin{figure}
- \centering
--\includegraphics[width=13cm]{figs/acm_overview.eps}
-+\includegraphics[width=13cm]{figs/acm_overview}
- \caption{Overview of activating sHype workload protection in Xen.
-   Section numbers point to representative examples.}
- \label{fig:acmoverview}
-@@ -2309,7 +2309,7 @@
- 
- \begin{figure}[htb]
- \centering
--\includegraphics[width=13cm]{figs/acm_ezpolicy_gui.eps}
-+\includegraphics[width=13cm]{figs/acm_ezpolicy_gui}
- \caption{Final layout including workload definition and Run-time Exclusion rules.}
- \label{fig:acmezpolicy}
- \end{figure}
 --- a/docs/xen-api/Makefile
 +++ b/docs/xen-api/Makefile
 @@ -6,35 +6,30 @@
