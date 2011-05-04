@@ -1,16 +1,17 @@
 --- a/tools/libxl/libxl.c
 +++ b/tools/libxl/libxl.c
-@@ -43,20 +43,12 @@
- 
- int libxl_ctx_init(libxl_ctx *ctx, int version, xentoollog_logger *lg)
+@@ -44,8 +44,6 @@
+ int libxl_ctx_alloc(libxl_ctx **pctx, int version, xentoollog_logger * lg)
  {
+     libxl_ctx *ctx;
 -    struct stat stat_buf;
 -
      if (version != LIBXL_VERSION)
          return ERROR_VERSION;
+ 
+@@ -58,12 +56,6 @@
      memset(ctx, 0, sizeof(libxl_ctx));
      ctx->lg = lg;
-     memset(&ctx->version_info, 0, sizeof(libxl_version_info));
  
 -    if ( stat(XENSTORE_PID_FILE, &stat_buf) != 0 ) {
 -        LIBXL__LOG_ERRNO(ctx, LIBXL__LOG_ERROR, "Is xenstore daemon running?\n"
@@ -23,7 +24,7 @@
          LIBXL__LOG_ERRNOVAL(ctx, LIBXL__LOG_ERROR, errno, 
 --- a/tools/libxl/libxl_internal.h
 +++ b/tools/libxl/libxl_internal.h
-@@ -110,7 +110,6 @@
+@@ -119,7 +119,6 @@
  #define AUTO_PHP_SLOT          0x100
  #define SYSFS_PCI_DEV          "/sys/bus/pci/devices"
  #define SYSFS_PCIBACK_DRIVER   "/sys/bus/pci/drivers/pciback"
