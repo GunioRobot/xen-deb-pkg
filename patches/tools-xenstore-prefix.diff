@@ -4,8 +4,8 @@
  endif
   
  xenstored: $(XENSTORED_OBJS)
--	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS_libxenctrl) $(SOCKET_LIBS) -o $@
-+	$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS_libxenctrl) $(call LDFLAGS_RPATH,../lib) $(SOCKET_LIBS) -o $@
+-	$(CC) $(LDFLAGS) $^ $(LDLIBS_libxenctrl) $(SOCKET_LIBS) -o $@
++	$(CC) $(LDFLAGS) $^ $(LDLIBS_libxenctrl) $(call LDFLAGS_RPATH,../lib) $(SOCKET_LIBS) -o $@
  
  $(CLIENTS): xenstore
  	ln -f xenstore $@
