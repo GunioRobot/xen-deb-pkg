@@ -24,12 +24,12 @@ tools-misc-rpath.diff
 tools-pygrub-prefix.diff
 tools-python-prefix.diff
 tools-python-rpath.diff
-tools-xcutils-rpath.diff
+# tools-xcutils-rpath.diff
 tools-xenmon-prefix.diff
 tools-xenmon-rpath.diff
 tools-xenpaging-prefix.diff
 tools-xenstat-prefix.diff
-tools-xenstat-rpath.diff
+# tools-xenstat-rpath.diff
 tools-xenstore-prefix.diff
 tools-xenstore-rpath.diff
 tools-xentrace-prefix.diff
