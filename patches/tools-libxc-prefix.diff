@@ -1,6 +1,6 @@
 --- a/tools/libxc/Makefile
 +++ b/tools/libxc/Makefile
-@@ -111,12 +111,13 @@
+@@ -108,12 +108,13 @@
  
  .PHONY: install
  install: build
@@ -16,21 +16,21 @@
  	$(INSTALL_DATA) libxenguest.a $(DESTDIR)$(LIBDIR)
  	$(INSTALL_DATA) xenguest.h $(DESTDIR)$(INCLUDEDIR)
  
-@@ -147,7 +148,7 @@
+@@ -144,7 +145,7 @@
  	$(AR) rc $@ $^
  
  libxenctrl.so: $(CTRL_PIC_OBJS)
--	$(CC) $(CFLAGS) $(LDFLAGS) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) -o $@ $^ $(PTHREAD_LIBS)
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) $(call LDFLAGS_RPATH) -o $@ $^ $(PTHREAD_LIBS)
+-	$(CC) $(LDFLAGS) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) -o $@ $^ $(PTHREAD_LIBS)
++	$(CC) $(LDFLAGS) $(DLOPEN_LIBS) $(SHLIB_LDFLAGS) $(call LDFLAGS_RPATH) -o $@ $^ $(PTHREAD_LIBS)
  
  # libxenguest
  
-@@ -178,7 +179,7 @@
+@@ -175,7 +176,7 @@
  
  libxenguest.so: COMPRESSION_LIBS = $(call zlib-options,l)
  libxenguest.so: $(GUEST_PIC_OBJS) libxenctrl.so
--	$(CC) $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz -lxenctrl $(PTHREAD_LIBS)
-+	$(CC) $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) $(call LDFLAGS_RPATH) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz -lxenctrl $(PTHREAD_LIBS)
+-	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz $(LDLIBS_libxenctrl) $(PTHREAD_LIBS)
++	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) $(call LDFLAGS_RPATH) -o $@ $(GUEST_PIC_OBJS) $(COMPRESSION_LIBS) -lz $(LDLIBS_libxenctrl) $(PTHREAD_LIBS)
  
  xenctrl_osdep_ENOSYS.so: $(OSDEP_PIC_OBJS) libxenctrl.so
- 	$(CC) -g $(CFLAGS) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(OSDEP_PIC_OBJS) -lxenctrl
+ 	$(CC) -g $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $(OSDEP_PIC_OBJS) $(LDLIBS_libxenctrl)
