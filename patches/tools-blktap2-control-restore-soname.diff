@@ -1,0 +1,44 @@
+--- a/tools/blktap2/control/Makefile
++++ b/tools/blktap2/control/Makefile
+@@ -1,7 +1,10 @@
+ XEN_ROOT := $(CURDIR)/../../../
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
++MAJOR              = 1.0
++MINOR              = 0
+ LIBNAME            = libblktapctl
++LIBSONAME          = $(LIBNAME).so.$(MAJOR)
+ 
+ IBIN               = tap-ctl
+ 
+@@ -35,21 +38,27 @@
+ PICS = $(CTL_PICS)
+ 
+ LIB_STATIC = $(LIBNAME).a
+-LIB_SHARED = $(LIBNAME).so
++LIB_SHARED = $(LIBSONAME).$(MINOR)
+ IBIN = tap-ctl
+ 
+ all: build
+ 
+ build: $(IBIN) $(LIB_STATIC) $(LIB_SHARED)
+ 
++$(LIBNAME).so: $(LIBSONAME)
++	ln -sf $< $@
++
++$(LIBSONAME): $(LIB_SHARED)
++	ln -sf $< $@
++
+ tap-ctl: tap-ctl.o $(LIBNAME).so
+-	$(CC) $(LDFLAGS) $(call LDFLAGS_RPATH,../lib) -o $@ $^
++	$(CC) $(LDFLAGS) -o $@ $^
+ 
+ $(LIB_STATIC): $(CTL_OBJS)
+ 	$(AR) r $@ $^
+ 
+ $(LIB_SHARED): $(CTL_PICS)
+-	$(CC) $(LDFLAGS) -fPIC $(SHLIB_LDFLAGS) -rdynamic $^ -o $@
++	$(CC) $(LDFLAGS) -fPIC  -Wl,$(SONAME_LDFLAG) -Wl,$(LIBSONAME) $(SHLIB_LDFLAGS) -rdynamic $^ -o $@
+ 
+ install: $(IBIN) $(LIB_STATIC) $(LIB_SHARED)
+ 	$(INSTALL_DIR) $(DESTDIR)$(PRIVATE_SBINDIR)

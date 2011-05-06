@@ -54,3 +54,4 @@ tools-python-shebang.diff
 tools-xenstore-compatibility.diff
 tools-blktap2-vhd-lib-restore-soname.diff
 tools-blktap2-vhd-lib-install-public.diff
+tools-blktap2-control-restore-soname.diff
