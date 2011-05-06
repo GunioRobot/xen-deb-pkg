@@ -1,0 +1,42 @@
+--- a/tools/ocaml/libs/xl/xenlight_stubs.c
++++ b/tools/ocaml/libs/xl/xenlight_stubs.c
+@@ -28,10 +28,12 @@
+ 
+ #include <libxl.h>
+ 
++#define LOG_BUF_SIZE 2048
++
+ struct caml_logger {
+ 	struct xentoollog_logger logger;
+ 	int log_offset;
+-	char log_buf[2048];
++	char log_buf[LOG_BUF_SIZE];
+ };
+ 
+ typedef struct caml_gc {
+@@ -45,14 +47,14 @@
+ 	struct caml_logger *ologger = (struct caml_logger *) logger;
+ 
+ 	ologger->log_offset += vsnprintf(ologger->log_buf + ologger->log_offset,
+-	                                 2048 - ologger->log_offset, format, al);
++	                                 LOG_BUF_SIZE - 1 - ologger->log_offset, format, al);
+ }
+ 
+ static void log_destroy(struct xentoollog_logger *logger)
+ {
+ }
+ 
+-#define INIT_STRUCT() libxl_ctx *ctx; struct caml_logger lg; struct caml_gc gc; gc.offset = 0;
++#define INIT_STRUCT() libxl_ctx *ctx; struct caml_logger lg; struct caml_gc gc; lg.log_offset = 0; gc.offset = 0;
+ 
+ #define INIT_CTX()  \
+ 	lg.logger.vmessage = log_vmessage; \
+--- a/tools/ocaml/libs/xl/META.in
++++ b/tools/ocaml/libs/xl/META.in
+@@ -1,4 +1,4 @@
+ version = "@VERSION@"
+ description = "Xen Toolstack Library"
+-archive(byte) = "xl.cma"
+-archive(native) = "xl.cmxa"
++archive(byte) = "xenlight.cma"
++archive(native) = "xenlight.cmxa"
