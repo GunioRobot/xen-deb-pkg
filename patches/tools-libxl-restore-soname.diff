@@ -1,0 +1,46 @@
+--- a/tools/libxl/Makefile
++++ b/tools/libxl/Makefile
+@@ -5,6 +5,12 @@
+ XEN_ROOT = $(CURDIR)/../..
+ include $(XEN_ROOT)/tools/Rules.mk
+ 
++MAJOR = 2.0
++MINOR = 0
++
++XLUMAJOR = 1.0
++XLUMINOR = 0
++
+ CFLAGS += -Werror -Wno-format-zero-length -Wmissing-declarations
+ CFLAGS += -I. -fPIC
+ 
+@@ -78,14 +84,26 @@
+ 	mv __libxl_$*.h _libxl_$*.h
+ 	mv __libxl_$*.c _libxl_$*.c
+ 
+-libxenlight.so: $(LIBXL_OBJS)
+-	$(CC) $(LDFLAGS) $(LDFLAGS_LIBXL) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXL_LIBS)
++libxenlight.so: libxenlight.so.$(MAJOR)
++	ln -sf $< $@
++
++libxenlight.so.$(MAJOR): libxenlight.so.$(MAJOR).$(MINOR)
++	ln -sf $< $@
++
++libxenlight.so.$(MAJOR).$(MINOR): $(LIBXL_OBJS)
++	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxenlight.so.$(MAJOR) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXL_LIBS)
+ 
+ libxenlight.a: $(LIBXL_OBJS)
+ 	$(AR) rcs libxenlight.a $^
+ 
+-libxlutil.so: $(LIBXLU_OBJS)
+-	$(CC) $(LDFLAGS) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXLU_LIBS)
++libxlutil.so: libxlutil.so.$(XLUMAJOR)
++	ln -sf $< $@
++
++libxlutil.so.$(XLUMAJOR): libxlutil.so.$(XLUMAJOR).$(XLUMINOR)
++	ln -sf $< $@
++
++libxlutil.so.$(XLUMAJOR).$(XLUMINOR): $(LIBXLU_OBJS)
++	$(CC) $(LDFLAGS) -Wl,$(SONAME_LDFLAG) -Wl,libxlutil.so.$(XLUMAJOR) $(SHLIB_LDFLAGS) -o $@ $^ $(LIBXLU_LIBS)
+ 
+ libxlutil.a: $(LIBXLU_OBJS)
+ 	$(AR) rcs libxlutil.a $^
