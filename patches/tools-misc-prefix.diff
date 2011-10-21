@@ -1,6 +1,6 @@
 --- a/tools/misc/Makefile
 +++ b/tools/misc/Makefile
-@@ -37,10 +37,8 @@
+@@ -35,10 +35,8 @@
  
  .PHONY: install
  install: build
@@ -15,12 +15,12 @@
  .PHONY: clean
 --- a/tools/misc/lomount/Makefile
 +++ b/tools/misc/lomount/Makefile
-@@ -16,7 +16,7 @@
+@@ -11,7 +11,7 @@
  
  .PHONY: install
  install install-recurse: build
--	$(INSTALL_PROG) $(BIN) $(SCRIPTS) $(DESTDIR)$(BINDIR)
-+	$(INSTALL_PROG) $(BIN) $(SCRIPTS) $(DESTDIR)$(PRIVATE_BINDIR)
+-	$(INSTALL_PROG) lomount $(SCRIPTS) $(DESTDIR)$(BINDIR)
++	$(INSTALL_PROG) lomount $(SCRIPTS) $(DESTDIR)$(PRIVATE_BINDIR)
  
  .PHONY: clean
  clean:
