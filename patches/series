@@ -62,3 +62,4 @@ tools-libxl-restore-soname.diff
 tools-libxl-install-public.diff
 
 tools-libxc-xcp-update.diff
+tools-ocaml-makefile.diff
