@@ -1,15 +1,15 @@
 --- a/qemu/xen-hooks.mak
 +++ b/qemu/xen-hooks.mak
-@@ -46,9 +46,6 @@
- CONFIG_AUDIO=
+@@ -47,9 +47,6 @@
  OBJS += xenfbfront.o
  else
+ ifndef CONFIG_NetBSD
 -CPPFLAGS+= -I$(XEN_ROOT)/tools/blktap/lib
 -LIBS += -L$(XEN_ROOT)/tools/blktap/lib -lblktap
 -OBJS += xen_blktap.o
  OBJS += tpm_tis.o
  endif
- 
+ endif
 --- a/qemu/Makefile
 +++ b/qemu/Makefile
 @@ -47,13 +47,9 @@
@@ -43,7 +43,7 @@
      CPUState *env;
      uint32_t domid_target;
  
--#ifndef CONFIG_STUBDOM
+-#if !defined(CONFIG_STUBDOM) && !defined(__NetBSD__)
 -    /* Initialize tapdisk client */
 -    init_blktap();
 -#endif
@@ -57,7 +57,7 @@
  
  #include "xenctrl.h"
  #include "xs.h"
--#ifndef CONFIG_STUBDOM
+-#if !defined(CONFIG_STUBDOM) && !defined(__NetBSD__)
 -#include "blktaplib.h"
 -#endif
  
